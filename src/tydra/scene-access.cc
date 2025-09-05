@@ -2350,8 +2350,9 @@ std::vector<const GeomSubset *> GetGeomSubsets(
       if (familyName.valid()) {
         if (pv->familyName.authored()) {
           if (pv->familyName.get_value().has_value()) {
-            const value::token &tok = pv->familyName.get_value().value();
-            if (familyName.str() == tok.str()) {
+            const auto token_family_name =
+                pv->familyName.get_value().value().str();
+            if (familyName.str() == token_family_name) {
               result.push_back(pv);
             }
           } else {
