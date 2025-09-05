@@ -79,7 +79,8 @@ bool TraverseRec(const std::string &path_prefix, const tinyusdz::Prim &prim,
 
   if (prim.is<T>()) {
     if (const T *pv = prim.as<T>()) {
-      DCOUT("Path : <" << prim_abs_path << "> is " << tinyusdz::value::TypeTraits<T>::type_name());
+      DCOUT("Path : <" << prim_abs_path << "> is "
+                       << tinyusdz::value::TypeTraits<T>::type_name());
       itemmap[prim_abs_path] = pv;
     }
   }
@@ -335,7 +336,7 @@ bool VisitPrimsRec(const tinyusdz::Path &root_abs_path,
   return true;
 }
 
-#if 0 // TODO: Remove
+#if 0  // TODO: Remove
 // Scalar-valued attribute.
 // TypedAttribute* => Attribute defined in USD schema, so not a custom attr.
 template<typename T>
@@ -379,9 +380,9 @@ void ToProperty(
 // Scalar-valued attribute.
 // TypedAttribute* => Attribute defined in USD schema, so not a custom attr.
 template <typename T>
-bool ToProperty(const TypedAttribute<T> &input, Property &output, std::string *err) {
-
-#if 0 // old-code: TODO: Remove
+bool ToProperty(const TypedAttribute<T> &input, Property &output,
+                std::string *err) {
+#if 0  // old-code: TODO: Remove
   if (input.is_blocked()) {
     Attribute attr;
     attr.set_blocked(input.is_blocked());
@@ -455,7 +456,9 @@ bool ToProperty(const TypedAttribute<T> &input, Property &output, std::string *e
       attr.set_var(std::move(pvar));
     } else {
       if (err) {
-        (*err) += fmt::format("[InternalError] Invalid TypedAttribute<{}> value.", value::TypeTraits<T>::type_name());
+        (*err) +=
+            fmt::format("[InternalError] Invalid TypedAttribute<{}> value.",
+                        value::TypeTraits<T>::type_name());
       }
 
       return false;
@@ -464,7 +467,7 @@ bool ToProperty(const TypedAttribute<T> &input, Property &output, std::string *e
 
   attr.metas() = input.metas();
 
-  output = Property(std::move(attr), /* custom */false);
+  output = Property(std::move(attr), /* custom */ false);
 
 #endif
 
@@ -475,8 +478,8 @@ bool ToProperty(const TypedAttribute<T> &input, Property &output, std::string *e
 // TypedAttribute* => Attribute defined in USD schema, so not a custom attr.
 //
 template <typename T>
-bool ToProperty(const TypedAttribute<Animatable<T>> &input, Property &output, std::string *err) {
-
+bool ToProperty(const TypedAttribute<Animatable<T>> &input, Property &output,
+                std::string *err) {
   DCOUT("ToProperty ");
   (void)err;
 
@@ -494,13 +497,11 @@ bool ToProperty(const TypedAttribute<Animatable<T>> &input, Property &output, st
   }
 
   if (input.has_connections()) {
-    
-
     attr.set_connections(input.get_connections());
   }
 
-  //DCOUT("has_default " << input.has_default());
-  //DCOUT("has_timesamples " << input.has_timesamples());
+  // DCOUT("has_default " << input.has_default());
+  // DCOUT("has_timesamples " << input.has_timesamples());
 
   {
     primvar::PrimVar pvar;
@@ -508,7 +509,6 @@ bool ToProperty(const TypedAttribute<Animatable<T>> &input, Property &output, st
     // Includes !authored()
     nonstd::optional<Animatable<T>> aval = input.get_value();
     if (aval) {
-
       if (aval.value().is_blocked()) {
         attr.set_blocked(true);
       }
@@ -522,7 +522,8 @@ bool ToProperty(const TypedAttribute<Animatable<T>> &input, Property &output, st
       }
 
       if (aval.value().has_timesamples()) {
-        value::TimeSamples ts = ToTypelessTimeSamples(aval.value().get_timesamples());
+        value::TimeSamples ts =
+            ToTypelessTimeSamples(aval.value().get_timesamples());
         pvar.set_timesamples(ts);
       }
 
@@ -801,7 +802,6 @@ bool ToTokenProperty(const TypedAttributeWithFallback<Animatable<T>> &input,
     if (v.has_timesamples() || v.has_default()) {
       attr.set_var(std::move(pvar));
     }
-
   }
 
   attr.metas() = input.metas();
@@ -922,7 +922,6 @@ bool ToTokenProperty(const TypedAttributeWithFallback<T> &input,
 
       attr.set_var(std::move(pvar));
     }
-
   }
 
   attr.metas() = input.metas();
@@ -2184,7 +2183,7 @@ std::string DumpXformNodeRec(const XformNode &node, uint32_t indent) {
   return ss.str();
 }
 
-}  // namespace local
+}  // namespace
 
 bool BuildXformNodeFromStage(
     const tinyusdz::Stage &stage, XformNode *rootNode, /* out */
@@ -2351,8 +2350,9 @@ std::vector<const GeomSubset *> GetGeomSubsets(
       if (familyName.valid()) {
         if (pv->familyName.authored()) {
           if (pv->familyName.get_value().has_value()) {
-            const value::token &tok = pv->familyName.get_value().value();
-            if (familyName.str() == tok.str()) {
+            const auto token_family_name =
+                pv->familyName.get_value().value().str();
+            if (familyName.str() == token_family_name) {
               result.push_back(pv);
             }
           } else {
@@ -2386,8 +2386,9 @@ std::vector<const GeomSubset *> GetGeomSubsetChildren(
       if (familyName.valid()) {
         if (pv->familyName.authored()) {
           if (pv->familyName.get_value().has_value()) {
-            const value::token &tok = pv->familyName.get_value().value();
-            if (familyName.str() == tok.str()) {
+            const auto token_family_name =
+                pv->familyName.get_value().value().str();
+            if (familyName.str() == token_family_name) {
               result.push_back(pv);
             }
           } else {
@@ -2625,12 +2626,11 @@ bool GetGeomPrimvar(const Stage &stage, const GPrim *gprim,
   // - default or timesamples
   // - connection
 
-
   if (it->second.is_attribute()) {
     const Attribute &attr = it->second.get_attribute();
 
-    if (attr.is_connection()) { // attribute only contains 'connection'
-      // follow targetPath to get Attribute 
+    if (attr.is_connection()) {  // attribute only contains 'connection'
+      // follow targetPath to get Attribute
       Attribute terminal_attr;
       bool ret = tydra::GetTerminalAttribute(stage, attr, primvar_name,
                                              &terminal_attr, err);
@@ -2654,7 +2654,8 @@ bool GetGeomPrimvar(const Stage &stage, const GPrim *gprim,
       primvar.set_elementSize(attr.metas().elementSize.value());
     }
     if (attr.metas().has_unauthoredValuesIndex()) {
-      primvar.set_unauthoredValuesIndex(attr.metas().get_unauthoredValuesIndex());
+      primvar.set_unauthoredValuesIndex(
+          attr.metas().get_unauthoredValuesIndex());
     }
     // TODO: copy other attribute metas?
 
@@ -2668,7 +2669,8 @@ bool GetGeomPrimvar(const Stage &stage, const GPrim *gprim,
   const auto indexIt = gprim->props.find(index_name);
 
   // Primvar indices are only relevant for non-constant interpolation modes
-  bool constant_interpolation = primvar.get_interpolation() == tinyusdz::Interpolation::Constant;
+  bool constant_interpolation =
+      primvar.get_interpolation() == tinyusdz::Interpolation::Constant;
 
   if (indexIt != gprim->props.end() && !constant_interpolation) {
     if (indexIt->second.is_attribute()) {
@@ -2681,8 +2683,8 @@ bool GetGeomPrimvar(const Stage &stage, const GPrim *gprim,
                         primvar_name));
       }
 
-      if (indexAttr.is_connection()) { // attribute only contains 'connection'
-        // follow targetPath to get Attribute 
+      if (indexAttr.is_connection()) {  // attribute only contains 'connection'
+        // follow targetPath to get Attribute
         Attribute terminal_indexAttr;
         bool ret = tydra::GetTerminalAttribute(stage, indexAttr, index_name,
                                                &terminal_indexAttr, err);
@@ -2690,8 +2692,11 @@ bool GetGeomPrimvar(const Stage &stage, const GPrim *gprim,
           return false;
         }
 
-        if (!terminal_indexAttr.has_value() && !terminal_indexAttr.has_timesamples()) {
-          PUSH_ERROR_AND_RETURN("[Internal Error] Invalid Terminal Index Attribute. Terminal Index Attribute does not have `default` or timesamples value.");
+        if (!terminal_indexAttr.has_value() &&
+            !terminal_indexAttr.has_timesamples()) {
+          PUSH_ERROR_AND_RETURN(
+              "[Internal Error] Invalid Terminal Index Attribute. Terminal "
+              "Index Attribute does not have `default` or timesamples value.");
         }
 
         if (terminal_indexAttr.has_timesamples()) {
@@ -2702,12 +2707,11 @@ bool GetGeomPrimvar(const Stage &stage, const GPrim *gprim,
                 "Index Attribute seems not an timesamples with int[] type: {}",
                 index_name));
           }
-        
+
           primvar.set_timesampled_indices(tss);
         }
 
         if (terminal_indexAttr.has_value()) {
-
           // TODO: Support uint[]?
           std::vector<int32_t> indices;
           if (!terminal_indexAttr.get_value(&indices)) {
@@ -2717,16 +2721,16 @@ bool GetGeomPrimvar(const Stage &stage, const GPrim *gprim,
           }
 
           primvar.set_default_indices(indices);
-
         }
-      
+
       } else if (indexAttr.is_blocked()) {
         // Value blocked. e.g. `float2[] primvars:st:indices = None`
         // We can simply skip reading indices.
       } else {
-
         if (!indexAttr.has_value() && !indexAttr.has_timesamples()) {
-          PUSH_ERROR_AND_RETURN("[Internal Error] Invalid Index Attribute. Index Attribute does not have `default` or timesamples value.");
+          PUSH_ERROR_AND_RETURN(
+              "[Internal Error] Invalid Index Attribute. Index Attribute does "
+              "not have `default` or timesamples value.");
         }
 
         if (indexAttr.has_value()) {
@@ -2739,7 +2743,6 @@ bool GetGeomPrimvar(const Stage &stage, const GPrim *gprim,
                             indexAttr.type_name()));
           }
 
-
           primvar.set_default_indices(indices);
         }
 
@@ -2747,12 +2750,13 @@ bool GetGeomPrimvar(const Stage &stage, const GPrim *gprim,
           const auto &ts = indexAttr.get_var().ts_raw();
           TypedTimeSamples<std::vector<int32_t>> tss;
           if (!tss.from_timesamples(ts)) {
-            PUSH_ERROR_AND_RETURN(fmt::format("Index Attribute seems not an timesamples with int[] type: {}", index_name));
+            PUSH_ERROR_AND_RETURN(fmt::format(
+                "Index Attribute seems not an timesamples with int[] type: {}",
+                index_name));
           }
-        
+
           primvar.set_timesampled_indices(tss);
         }
-
       }
     } else {
       // indices are optional, so ok to skip it.
@@ -2909,8 +2913,7 @@ namespace detail {
 
 static bool BuildSkelHierarchyImpl(
     /* inout */ std::set<size_t> &visitSet,
-    /* inout */ SkelNode &parentNode,
-    const std::vector<int> &parentJointIds,
+    /* inout */ SkelNode &parentNode, const std::vector<int> &parentJointIds,
     const std::vector<value::token> &joints,
     const std::vector<value::token> &jointNames,
     const std::vector<value::matrix4d> bindTransforms,
@@ -2935,9 +2938,9 @@ static bool BuildSkelHierarchyImpl(
       visitSet.insert(i);
 
       // Recursively traverse children
-      if (!BuildSkelHierarchyImpl(visitSet, node,
-                                  parentJointIds, joints, jointNames, bindTransforms,
-                                  restTransforms, err)) {
+      if (!BuildSkelHierarchyImpl(visitSet, node, parentJointIds, joints,
+                                  jointNames, bindTransforms, restTransforms,
+                                  err)) {
         return false;
       }
 
@@ -2982,13 +2985,12 @@ bool BuildSkelHierarchy(const Skeleton &skel, SkelNode &dst, std::string *err) {
                       joints.size(), jointNames.size(), skel.name));
     }
   } else {
-    // Use joints 
+    // Use joints
     jointNames.resize(joints.size());
     for (size_t i = 0; i < joints.size(); i++) {
       jointNames[i] = joints[i];
     }
   }
-
 
   std::vector<value::matrix4d> restTransforms;
   if (skel.restTransforms.authored()) {
@@ -3066,11 +3068,11 @@ bool BuildSkelHierarchy(const Skeleton &skel, SkelNode &dst, std::string *err) {
   root.rest_transform = restTransforms[rootIdx];
 
   DCOUT("parentJointIds = " << parentJointIds);
- 
+
   // Construct hierachy from flattened id array.
-  if (!detail::BuildSkelHierarchyImpl(visitSet, root, parentJointIds, joints, jointNames,
-                                      bindTransforms, restTransforms,
-                                      err)) {
+  if (!detail::BuildSkelHierarchyImpl(visitSet, root, parentJointIds, joints,
+                                      jointNames, bindTransforms,
+                                      restTransforms, err)) {
     return false;
   }
 
@@ -3081,8 +3083,8 @@ bool BuildSkelHierarchy(const Skeleton &skel, SkelNode &dst, std::string *err) {
 
 namespace {
 
-void BuildSkelNameToIndexMapRec(const SkelNode &node, std::map<std::string, int> &m) {
-
+void BuildSkelNameToIndexMapRec(const SkelNode &node,
+                                std::map<std::string, int> &m) {
   if (node.joint_name.size() && (node.joint_id >= 0)) {
     m[node.joint_name] = node.joint_id;
   }
@@ -3090,17 +3092,15 @@ void BuildSkelNameToIndexMapRec(const SkelNode &node, std::map<std::string, int>
   for (const auto &child : node.children) {
     BuildSkelNameToIndexMapRec(child, m);
   }
-
 }
 
-} // namespace
+}  // namespace
 
 std::map<std::string, int> BuildSkelNameToIndexMap(const SkelHierarchy &skel) {
-
   std::map<std::string, int> m;
 
   BuildSkelNameToIndexMapRec(skel.root_node, m);
-  
+
   return m;
 }
 
