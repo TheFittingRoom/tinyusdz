@@ -436,8 +436,8 @@ bool LoadUSDZFromMemory(const uint8_t *addr, const size_t length,
         }
       } else if (ext.compare("usd") == 0) {
         // Slice the memory for this .usd file
-        const size_t start_addr_offset = assets[i].byte_begin;
-        const size_t end_addr_offset = assets[i].byte_end;
+        const auto start_addr_offset = assets[i].byte_begin;
+        const auto end_addr_offset = assets[i].byte_end;
         if (end_addr_offset <= start_addr_offset || end_addr_offset > length) {
           if (err) {
             (*err) += "Invalid offsets for USD file inside USDZ: [" +
@@ -446,8 +446,8 @@ bool LoadUSDZFromMemory(const uint8_t *addr, const size_t length,
           return false;
         }
 
-        const size_t usd_size = end_addr_offset - start_addr_offset;
-        const uint8_t *usd_addr = addr + start_addr_offset;
+        const auto usd_size = end_addr_offset - start_addr_offset;
+        const auto *usd_addr = addr + start_addr_offset;
 
         // Detect whether it's usda or usdc
         std::string detected_format;
