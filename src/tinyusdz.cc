@@ -434,6 +434,42 @@ bool LoadUSDZFromMemory(const uint8_t *addr, const size_t length,
         if (usda_index == -1) {
           usda_index = int32_t(i);
         }
+      } else if (ext.compare("usd") == 0) {
+        // Slice the memory for this .usd file
+        const auto start_addr_offset = assets[i].byte_begin;
+        const auto end_addr_offset = assets[i].byte_end;
+        if (end_addr_offset <= start_addr_offset || end_addr_offset > length) {
+          if (err) {
+            (*err) += "Invalid offsets for USD file inside USDZ: [" +
+                      assets[i].filename + "].\n";
+          }
+          return false;
+        }
+
+        const auto usd_size = end_addr_offset - start_addr_offset;
+        const auto *usd_addr = addr + start_addr_offset;
+
+        // Detect whether it's usda or usdc
+        std::string detected_format;
+        if (!IsUSD(usd_addr, usd_size, &detected_format)) {
+          if (err) {
+            (*err) +=
+                "Unrecognized USD format in [" + assets[i].filename + "].\n";
+          }
+          return false;
+        }
+
+        if (detected_format == "usdc") {
+          usdc_index = int32_t(i);
+        } else if (detected_format == "usda") {
+          usda_index = int32_t(i);
+        } else {
+          if (err) {
+            (*err) += "Unsupported USD format '" + detected_format + "' in [" +
+                      assets[i].filename + "].\n";
+          }
+          return false;
+        }
       }
     }
   }
