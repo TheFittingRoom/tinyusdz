@@ -4271,7 +4271,7 @@ bool ReconstructShader<UsdPrimvarReader_float2>(
                    preader->fallback)
     if ((prop.first == "outputs:result") && !table.count("outputs:result")) {
       auto tok_attr = TypedAttribute<Animatable<value::token>>();
-      auto ret = ParseTypedAttribute(table, prop.first, prop.second,
+      const auto ret = ParseTypedAttribute(table, prop.first, prop.second,
                                      "outputs:result", tok_attr);
       if (ret.code == ParseResult::ResultCode::Success) {
         DCOUT(
