@@ -4269,6 +4269,21 @@ bool ReconstructShader<UsdPrimvarReader_float2>(
     }
     PARSE_TYPED_ATTRIBUTE(table, prop, "inputs:fallback", UsdPrimvarReader_float2,
                    preader->fallback)
+    if ((prop.first == "outputs:result") && !table.count("outputs:result")) {
+      auto tok_attr = TypedAttribute<Animatable<value::token>>();
+      const auto ret = ParseTypedAttribute(table, prop.first, prop.second,
+                                     "outputs:result", tok_attr);
+      if (ret.code == ParseResult::ResultCode::Success) {
+        DCOUT(
+            "coercing token to float2 for "
+            "primvarReader.outputs:result");
+        preader->result.set_authored(true);
+        preader->result.set_actual_type_name("float2");  // force type
+        preader->result.metas() = prop.second.get_attribute().metas();
+        table.insert("outputs:result");
+        continue;
+      }
+    }
     PARSE_SHADER_TERMINAL_ATTRIBUTE(table, prop, "outputs:result",
                                   UsdPrimvarReader_float2, preader->result)
     ADD_PROPERTY(table, prop, UsdPrimvarReader_float2, preader->props)
