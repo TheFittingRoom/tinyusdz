@@ -3212,8 +3212,8 @@ bool ReconstructPrim<SphereLight>(
     // PARSE_PROPERTY(prop, "inputs:colorTemperature", light->colorTemperature)
     PARSE_TYPED_ATTRIBUTE(table, prop, "inputs:color", SphereLight, light->color)
     PARSE_TYPED_ATTRIBUTE(table, prop, "inputs:radius", SphereLight, light->radius)
-    PARSE_TYPED_ATTRIBUTE(table, prop, "inputs:intensity", SphereLight,
-                   light->intensity)
+    PARSE_TYPED_ATTRIBUTE(table, prop, "inputs:intensity", SphereLight, light->intensity)
+    PARSE_TYPED_ATTRIBUTE(table, prop, "inputs:normalize", SphereLight, light->normalize);
     PARSE_TIMESAMPLED_ENUM_PROPERTY(table, prop, kVisibility, Visibility, VisibilityEnumHandler, SphereLight,
                    light->visibility, options.strict_allowedToken_check)
     PARSE_UNIFORM_ENUM_PROPERTY(table, prop, kPurpose, Purpose, PurposeEnumHandler, SphereLight,
@@ -3251,14 +3251,14 @@ bool ReconstructPrim<RectLight>(
     PARSE_TYPED_ATTRIBUTE(table, prop, "inputs:color", RectLight, light->color)
     PARSE_TYPED_ATTRIBUTE(table, prop, "inputs:height", RectLight, light->height)
     PARSE_TYPED_ATTRIBUTE(table, prop, "inputs:width", RectLight, light->width)
-    PARSE_TYPED_ATTRIBUTE(table, prop, "inputs:intensity", RectLight,
-                   light->intensity)
+    PARSE_TYPED_ATTRIBUTE(table, prop, "inputs:intensity", RectLight, light->intensity)
+    PARSE_TYPED_ATTRIBUTE(table, prop, "inputs:normalize", RectLight, light->normalize);
     PARSE_EXTENT_ATTRIBUTE(table, prop, kExtent, RectLight, light->extent)
     PARSE_TIMESAMPLED_ENUM_PROPERTY(table, prop, kVisibility, Visibility, VisibilityEnumHandler, RectLight,
                    light->visibility, options.strict_allowedToken_check)
     PARSE_UNIFORM_ENUM_PROPERTY(table, prop, kPurpose, Purpose, PurposeEnumHandler, RectLight,
                        light->purpose, options.strict_allowedToken_check)
-    ADD_PROPERTY(table, prop, SphereLight, light->props)
+    ADD_PROPERTY(table, prop, RectLight, light->props)
     PARSE_PROPERTY_END_MAKE_WARN(table, prop)
   }
 
