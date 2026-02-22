@@ -78,6 +78,7 @@ option(TINYUSDZ_WITH_BUILTIN_IMAGE_LOADER
 option(TINYUSDZ_WITH_TYDRA
        "Build with Tydra module(Handly USD scene converter for the renderer, DCC, etc)."
        ON)
+option(TINYUSDZ_INSTALL "Generate install targets" ${PROJECT_IS_TOP_LEVEL})
 
 
 if(MSVC)
@@ -1368,3 +1369,16 @@ if(WIN32)
                                            "${CMAKE_CURRENT_SOURCE_DIR}")
   endif()
 endif()
+
+if(TINYUSDZ_INSTALL)
+	include(GNUInstallDirs)
+  install(TARGETS ${TINYUSDZ_TARGET_STATIC})
+
+  install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/
+          DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tinyusdz
+          FILES_MATCHING
+          PATTERN "*.h"
+          PATTERN "*.hh"
+          PATTERN "*.hpp")
+endif()
+
