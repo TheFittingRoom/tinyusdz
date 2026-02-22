@@ -1397,7 +1397,8 @@ if(TINYUSDZ_INSTALL)
           FILES_MATCHING
           PATTERN "*.h"
           PATTERN "*.hh"
-          PATTERN "*.hpp")
+          PATTERN "*.hpp"
+          PATTERN "*.inc")
 
 	include(CMakePackageConfigHelpers)
 
