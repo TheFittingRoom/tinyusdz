@@ -931,6 +931,9 @@ add_sanitizers(${TINYUSDZ_TARGET_STATIC})
 # Target with namespace
 add_library(${TINYUSDZ_TARGET_STATIC_NS} ALIAS ${TINYUSDZ_TARGET_STATIC})
 
+# Fix for compiling with modern C++ versions
+target_compile_definitions(${TINYUSDZ_TARGET_STATIC} PUBLIC -Dnsel_CONFIG_SELECT_EXPECTED)
+
 
 if(TINYUSDZ_BUILD_SHARED_LIBS)
   #add_library(
