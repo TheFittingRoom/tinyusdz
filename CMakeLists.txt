@@ -10,7 +10,7 @@ set(BUILD_TARGET_PY "pytinyusd")
 set(TINYUSDZ_TEST_TARGET "test_tinyusdz")
 set(TINYUSDZ_BENCHMARK_TARGET "benchmark_tinyusdz")
 
-project(${TINYUSDZ_TARGET} C CXX)
+project(${TINYUSDZ_TARGET} VERSION 0.1.0 C CXX)
 
 # PROJECT_IS_TOP_LEVEL is available from cmake 3.21
 if (CMAKE_VERSION VERSION_LESS 3.21)
@@ -1374,11 +1374,104 @@ if(TINYUSDZ_INSTALL)
 	include(GNUInstallDirs)
   install(TARGETS ${TINYUSDZ_TARGET_STATIC})
 
+  set(INSTALL_TARGETS ${TINYUSDZ_TARGET_STATIC})
+  if(TINYUSDZ_BUILD_SHARED_LIBS)
+    list(APPEND INSTALL_TARGETS ${TINYUSDZ_TARGET})
+  endif()
+  if(TINYUSDZ_WITH_C_API)
+    list(APPEND INSTALL_TARGETS ${BUILD_TARGET_C}_static)
+    if(TINYUSDZ_BUILD_SHARED_LIBS)
+      list(APPEND INSTALL_TARGETS ${BUILD_TARGET_C})
+    endif()
+  endif()
+
+  install(TARGETS ${INSTALL_TARGETS}
+          EXPORT tinyusdzTargets
+          ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+          LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+          RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+          INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tinyusdz)
+          
   install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/
           DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tinyusdz
           FILES_MATCHING
           PATTERN "*.h"
           PATTERN "*.hh"
           PATTERN "*.hpp")
+
+	include(CMakePackageConfigHelpers)
+
+  # 1. Export the targets to a file (this creates tinyusdzTargets.cmake)
+  # Downstream users will access your library as tinyusdz::tinyusdz_static etc.
+  install(EXPORT tinyusdzTargets
+          FILE tinyusdzTargets.cmake
+          NAMESPACE tinyusdz::
+          DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/tinyusdz)
+
+  # 2. Generate the Config file from your template
+  configure_package_config_file(
+      "${CMAKE_CURRENT_SOURCE_DIR}/cmake/tinyusdzConfig.cmake.in"
+      "${CMAKE_CURRENT_BINARY_DIR}/tinyusdzConfig.cmake"
+      INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/tinyusdz
+  )
+
+  # 3. Generate a Version file so users can do find_package(tinyusdz 0.8.0 REQUIRED)
+  write_basic_package_version_file(
+      "${CMAKE_CURRENT_BINARY_DIR}/tinyusdzConfigVersion.cmake"
+      VERSION ${PROJECT_VERSION}
+      COMPATIBILITY SameMajorVersion
+  )
+
+  # 4. Install the generated Config and Version files
+  install(FILES
+      "${CMAKE_CURRENT_BINARY_DIR}/tinyusdzConfig.cmake"
+      "${CMAKE_CURRENT_BINARY_DIR}/tinyusdzConfigVersion.cmake"
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/tinyusdz
+  )
 endif()
 
+if(TINYUSDZ_INSTALL)
+  include(GNUInstallDirs)
+  include(CMakePackageConfigHelpers)
+
+  install(TARGETS ${TINYUSDZ_TARGET_STATIC})
+
+  install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/
+          DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tinyusdz
+          FILES_MATCHING
+          PATTERN "*.h"
+          PATTERN "*.hh"
+          PATTERN "*.hpp")
+
+	install(
+    TARGETS vk-bootstrap vk-bootstrap-compiler-warnings
+    EXPORT vk-bootstrap-targets
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  )
+  install(
+    EXPORT vk-bootstrap-targets
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/vk-bootstrap
+    NAMESPACE vk-bootstrap::
+  )
+
+	# Create vk-bootstrap-config.cmake
+	set(VK_BOOTSTRAP_EXPORT_TARGETS ${CMAKE_INSTALL_LIBDIR}/cmake/vk-bootstrap/vk-bootstrap-targets.cmake)
+	file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/tinyusdz-config.cmake.in" [=[
+			@PACKAGE_INIT@
+			include(@PACKAGE_VK_BOOTSTRAP_EXPORT_TARGETS@)
+	]=])
+
+	configure_package_config_file(
+			${CMAKE_CURRENT_BINARY_DIR}/vk-bootstrap-config.cmake.in
+			${CMAKE_CURRENT_BINARY_DIR}/vk-bootstrap-config.cmake
+			INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/vk-bootstrap
+			PATH_VARS VK_BOOTSTRAP_EXPORT_TARGETS
+			NO_SET_AND_CHECK_MACRO
+			NO_CHECK_REQUIRED_COMPONENTS_MACRO
+	)
+
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vk-bootstrap-config.cmake
+			DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/vk-bootstrap
+	)
+
+endif()
