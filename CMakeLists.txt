@@ -10,7 +10,7 @@ set(BUILD_TARGET_PY "pytinyusd")
 set(TINYUSDZ_TEST_TARGET "test_tinyusdz")
 set(TINYUSDZ_BENCHMARK_TARGET "benchmark_tinyusdz")
 
-project(${TINYUSDZ_TARGET} C CXX)
+project(${TINYUSDZ_TARGET} VERSION 0.1.0 LANGUAGES C CXX)
 
 # PROJECT_IS_TOP_LEVEL is available from cmake 3.21
 if (CMAKE_VERSION VERSION_LESS 3.21)
@@ -78,6 +78,7 @@ option(TINYUSDZ_WITH_BUILTIN_IMAGE_LOADER
 option(TINYUSDZ_WITH_TYDRA
        "Build with Tydra module(Handly USD scene converter for the renderer, DCC, etc)."
        ON)
+option(TINYUSDZ_INSTALL "Generate install targets" ${PROJECT_IS_TOP_LEVEL})
 
 
 if(MSVC)
@@ -930,6 +931,9 @@ add_sanitizers(${TINYUSDZ_TARGET_STATIC})
 # Target with namespace
 add_library(${TINYUSDZ_TARGET_STATIC_NS} ALIAS ${TINYUSDZ_TARGET_STATIC})
 
+# Fix for compiling with modern C++ versions
+target_compile_definitions(${TINYUSDZ_TARGET_STATIC} PUBLIC -Dnsel_CONFIG_SELECT_EXPECTED)
+
 
 if(TINYUSDZ_BUILD_SHARED_LIBS)
   #add_library(
@@ -1368,3 +1372,60 @@ if(WIN32)
                                            "${CMAKE_CURRENT_SOURCE_DIR}")
   endif()
 endif()
+
+if(TINYUSDZ_INSTALL)
+	include(GNUInstallDirs)
+  install(TARGETS ${TINYUSDZ_TARGET_STATIC})
+
+  set(INSTALL_TARGETS ${TINYUSDZ_TARGET_STATIC})
+  if(TINYUSDZ_BUILD_SHARED_LIBS)
+    list(APPEND INSTALL_TARGETS ${TINYUSDZ_TARGET})
+  endif()
+  if(TINYUSDZ_WITH_C_API)
+    list(APPEND INSTALL_TARGETS ${BUILD_TARGET_C}_static)
+    if(TINYUSDZ_BUILD_SHARED_LIBS)
+      list(APPEND INSTALL_TARGETS ${BUILD_TARGET_C})
+    endif()
+  endif()
+
+  install(TARGETS ${INSTALL_TARGETS}
+          EXPORT tinyusdzTargets
+          ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+          LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+          RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+          INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tinyusdz)
+          
+  install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/
+          DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tinyusdz
+          FILES_MATCHING
+          PATTERN "*.h"
+          PATTERN "*.hh"
+          PATTERN "*.hpp"
+          PATTERN "*.inc")
+
+	include(CMakePackageConfigHelpers)
+
+  install(EXPORT tinyusdzTargets
+          FILE tinyusdzTargets.cmake
+          NAMESPACE tinyusdz::
+          DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/tinyusdz)
+
+  configure_package_config_file(
+      "${CMAKE_CURRENT_SOURCE_DIR}/cmake/tinyusdzConfig.cmake.in"
+      "${CMAKE_CURRENT_BINARY_DIR}/tinyusdzConfig.cmake"
+      INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/tinyusdz
+  )
+
+  write_basic_package_version_file(
+      "${CMAKE_CURRENT_BINARY_DIR}/tinyusdzConfigVersion.cmake"
+      VERSION ${PROJECT_VERSION}
+      COMPATIBILITY SameMajorVersion
+  )
+
+  install(FILES
+      "${CMAKE_CURRENT_BINARY_DIR}/tinyusdzConfig.cmake"
+      "${CMAKE_CURRENT_BINARY_DIR}/tinyusdzConfigVersion.cmake"
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/tinyusdz
+  )
+endif()
+
