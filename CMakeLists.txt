@@ -125,7 +125,7 @@ option(
   "Build with OpenSubdiv(osdCPU. if required, set `osd_DIR` to specify the path to your own OpenSubdiv)"
   OFF)
 # Use embedded version of OpenSubdiv code by default
-set(osd_DIR ${PROJECT_SOURCE_DIR}/src/osd)
+set(osd_DIR ${PROJECT_SOURCE_DIR}/tinyusdz/osd)
 
 option(TINYUSDZ_WITH_AUDIO "Build with Audio support(MP3 and WAV)" ON)
 option(TINYUSDZ_WITH_ALAC_AUDIO "Build with ALAC(as M4A) Audio support" OFF)
@@ -363,173 +363,173 @@ if(TINYUSDZ_WITH_PYTHON)
 
   #add_subdirectory(${PROJECT_SOURCE_DIR}/src/external/nanobind nanobind_build)
 
-  add_subdirectory(${PROJECT_SOURCE_DIR}/src/external/pybind11)
+  add_subdirectory(${PROJECT_SOURCE_DIR}/tinyusdz/external/pybind11)
 endif()
 
 set(TINYUSDZ_SOURCES
-    ${PROJECT_SOURCE_DIR}/src/asset-resolution.cc
-    ${PROJECT_SOURCE_DIR}/src/tinyusdz.cc
-    ${PROJECT_SOURCE_DIR}/src/xform.cc
-    ${PROJECT_SOURCE_DIR}/src/performance.cc
-    ${PROJECT_SOURCE_DIR}/src/ascii-parser.cc
-    ${PROJECT_SOURCE_DIR}/src/ascii-parser-basetype.cc
-    ${PROJECT_SOURCE_DIR}/src/ascii-parser-timesamples.cc
-    ${PROJECT_SOURCE_DIR}/src/ascii-parser-timesamples-array.cc
-    ${PROJECT_SOURCE_DIR}/src/audio-loader.cc
-    ${PROJECT_SOURCE_DIR}/src/base122.cc
-    ${PROJECT_SOURCE_DIR}/src/usda-reader.cc
-    ${PROJECT_SOURCE_DIR}/src/usdc-reader.cc
-    ${PROJECT_SOURCE_DIR}/src/usda-writer.cc
-    ${PROJECT_SOURCE_DIR}/src/usdc-writer.cc
-    ${PROJECT_SOURCE_DIR}/src/composition.cc
-    ${PROJECT_SOURCE_DIR}/src/crate-reader.cc
-    ${PROJECT_SOURCE_DIR}/src/crate-format.cc
-    ${PROJECT_SOURCE_DIR}/src/crate-writer.cc
-    ${PROJECT_SOURCE_DIR}/src/crate-pprint.cc
-    ${PROJECT_SOURCE_DIR}/src/path-util.cc
-    ${PROJECT_SOURCE_DIR}/src/prim-reconstruct.cc
-    ${PROJECT_SOURCE_DIR}/src/prim-composition.cc
-    ${PROJECT_SOURCE_DIR}/src/prim-types.cc
-    ${PROJECT_SOURCE_DIR}/src/primvar.cc
-    ${PROJECT_SOURCE_DIR}/src/str-util.cc
-    ${PROJECT_SOURCE_DIR}/src/value-pprint.cc
-    ${PROJECT_SOURCE_DIR}/src/value-types.cc
-    ${PROJECT_SOURCE_DIR}/src/tiny-format.cc
-    ${PROJECT_SOURCE_DIR}/src/io-util.cc
-    ${PROJECT_SOURCE_DIR}/src/image-loader.cc
-    ${PROJECT_SOURCE_DIR}/src/image-writer.cc
-    ${PROJECT_SOURCE_DIR}/src/image-util.cc
-    ${PROJECT_SOURCE_DIR}/src/linear-algebra.cc
-    ${PROJECT_SOURCE_DIR}/src/usdGeom.cc
-    ${PROJECT_SOURCE_DIR}/src/usdSkel.cc
-    ${PROJECT_SOURCE_DIR}/src/usdShade.cc
-    ${PROJECT_SOURCE_DIR}/src/usdLux.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/asset-resolution.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/tinyusdz.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/xform.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/performance.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/ascii-parser.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/ascii-parser-basetype.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/ascii-parser-timesamples.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/ascii-parser-timesamples-array.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/audio-loader.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/base122.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/usda-reader.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/usdc-reader.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/usda-writer.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/usdc-writer.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/composition.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/crate-reader.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/crate-format.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/crate-writer.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/crate-pprint.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/path-util.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/prim-reconstruct.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/prim-composition.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/prim-types.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/primvar.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/str-util.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/value-pprint.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/value-types.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/tiny-format.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/io-util.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/image-loader.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/image-writer.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/image-util.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/linear-algebra.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/usdGeom.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/usdSkel.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/usdShade.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/usdLux.cc
     # usdMtlX has less dependency(pugixml), so add it to core component
-    ${PROJECT_SOURCE_DIR}/src/usdMtlx.cc
-    ${PROJECT_SOURCE_DIR}/src/usdObj.cc
-    ${PROJECT_SOURCE_DIR}/src/image-loader.cc
-    ${PROJECT_SOURCE_DIR}/src/pprinter.cc
-    ${PROJECT_SOURCE_DIR}/src/stage.cc
-    ${PROJECT_SOURCE_DIR}/src/stage.hh
+    ${PROJECT_SOURCE_DIR}/tinyusdz/usdMtlx.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/usdObj.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/image-loader.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/pprinter.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/stage.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/stage.hh
     )
 
 if (TINYUSDZ_WITH_TYDRA)
     list(APPEND TINYUSDZ_SOURCES
-        ${PROJECT_SOURCE_DIR}/src/tydra/facial.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/facial.hh
-        ${PROJECT_SOURCE_DIR}/src/tydra/prim-apply.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/prim-apply.hh
-        ${PROJECT_SOURCE_DIR}/src/tydra/scene-access.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/scene-access.hh
-        ${PROJECT_SOURCE_DIR}/src/tydra/attribute-eval.hh
-        ${PROJECT_SOURCE_DIR}/src/tydra/attribute-eval.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/attribute-eval-typed.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/attribute-eval-typed-animatable.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/attribute-eval-typed-fallback.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/attribute-eval-typed-animatable-fallback.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/obj-export.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/usd-export.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/shader-network.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/shader-network.hh
-        ${PROJECT_SOURCE_DIR}/src/tydra/render-data.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/render-data.hh
-        ${PROJECT_SOURCE_DIR}/src/tydra/texture-util.cc
-        ${PROJECT_SOURCE_DIR}/src/tydra/texture-util.hh
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/facial.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/facial.hh
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/prim-apply.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/prim-apply.hh
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/scene-access.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/scene-access.hh
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/attribute-eval.hh
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/attribute-eval.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/attribute-eval-typed.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/attribute-eval-typed-animatable.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/attribute-eval-typed-fallback.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/attribute-eval-typed-animatable-fallback.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/obj-export.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/usd-export.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/shader-network.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/shader-network.hh
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/render-data.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/render-data.hh
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/texture-util.cc
+        ${PROJECT_SOURCE_DIR}/tinyusdz/tydra/texture-util.hh
         )
 endif (TINYUSDZ_WITH_TYDRA)
 
 if(TINYUSDZ_WITH_PXR_COMPAT_API)
-  list(APPEND TINYUSDZ_SOURCES ${PROJECT_SOURCE_DIR}/src/pxr-compat.cc)
+  list(APPEND TINYUSDZ_SOURCES ${PROJECT_SOURCE_DIR}/tinyusdz/pxr-compat.cc)
 endif()
 
-set(TINYUSDZ_C_API_SOURCES ${PROJECT_SOURCE_DIR}/src/c-tinyusd.cc)
+set(TINYUSDZ_C_API_SOURCES ${PROJECT_SOURCE_DIR}/tinyusdz/c-tinyusd.cc)
 
 set(TINYUSDZ_DEP_SOURCES
-    ${PROJECT_SOURCE_DIR}/src/integerCoding.cpp
-    ${PROJECT_SOURCE_DIR}/src/lz4-compression.cc
-    ${PROJECT_SOURCE_DIR}/src/lz4/lz4.c
-    #${PROJECT_SOURCE_DIR}/src/external/pystring.cpp
+    ${PROJECT_SOURCE_DIR}/tinyusdz/integerCoding.cpp
+    ${PROJECT_SOURCE_DIR}/tinyusdz/lz4-compression.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/lz4/lz4.c
+    #${PROJECT_SOURCE_DIR}/tinyusdz/external/pystring.cpp
 )
 
 if (TINYUSDZ_WITH_BUILTIN_IMAGE_LOADER)
-  list(APPEND TINYUSDZ_DEP_SOURCES  ${PROJECT_SOURCE_DIR}/src/external/fpng.cpp)
+  list(APPEND TINYUSDZ_DEP_SOURCES  ${PROJECT_SOURCE_DIR}/tinyusdz/external/fpng.cpp)
   # Disable SSE for a while, since -mpclmul required to use SSE feature of fpng.
-  set_source_files_properties(${PROJECT_SOURCE_DIR}/src/external/fpng.cpp
+  set_source_files_properties(${PROJECT_SOURCE_DIR}/tinyusdz/external/fpng.cpp
                               PROPERTIES COMPILE_DEFINITIONS "FPNG_NO_SSE=1")
 endif()
 
 if(TINYUSDZ_WITH_USDMTLX)
-  list(APPEND TINYUSDZ_DEP_SOURCES ${PROJECT_SOURCE_DIR}/src/external/pugixml.cpp)
+  list(APPEND TINYUSDZ_DEP_SOURCES ${PROJECT_SOURCE_DIR}/tinyusdz/external/pugixml.cpp)
 endif()
 
 if(TINYUSDZ_WITH_JSON)
-  list(APPEND TINYUSDZ_DEP_SOURCES  ${PROJECT_SOURCE_DIR}/src/external/yyjson.c)
-  list(APPEND TINYUSDZ_DEP_SOURCES ${PROJECT_SOURCE_DIR}/src/json-to-usd.cc)
-  list(APPEND TINYUSDZ_DEP_SOURCES ${PROJECT_SOURCE_DIR}/src/usd-to-json.cc)
-  list(APPEND TINYUSDZ_DEP_SOURCES ${PROJECT_SOURCE_DIR}/src/json-writer.cc)
+  list(APPEND TINYUSDZ_DEP_SOURCES  ${PROJECT_SOURCE_DIR}/tinyusdz/external/yyjson.c)
+  list(APPEND TINYUSDZ_DEP_SOURCES ${PROJECT_SOURCE_DIR}/tinyusdz/json-to-usd.cc)
+  list(APPEND TINYUSDZ_DEP_SOURCES ${PROJECT_SOURCE_DIR}/tinyusdz/usd-to-json.cc)
+  list(APPEND TINYUSDZ_DEP_SOURCES ${PROJECT_SOURCE_DIR}/tinyusdz/json-writer.cc)
 endif()
 
 if(TINYUSDZ_WITH_USDFBX)
   list(APPEND TINYUSDZ_SOURCES
-    ${PROJECT_SOURCE_DIR}/src/usdFbx.cc
+    ${PROJECT_SOURCE_DIR}/tinyusdz/usdFbx.cc
   )
   list(APPEND TINYUSDZ_DEP_SOURCES
-       ${PROJECT_SOURCE_DIR}/src/external/OpenFBX/src/ofbx.cpp)
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/OpenFBX/src/ofbx.cpp)
 endif()
 
 if(TINYUSDZ_WITH_USDOBJ)
   list(APPEND TINYUSDZ_DEP_SOURCES
-       ${PROJECT_SOURCE_DIR}/src/external/tiny_obj_loader.cc)
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/tiny_obj_loader.cc)
 endif()
 
 if(TINYUSDZ_WITH_USDVOX)
-  list(APPEND TINYUSDZ_SOURCES ${PROJECT_SOURCE_DIR}/src/usdVox.cc)
+  list(APPEND TINYUSDZ_SOURCES ${PROJECT_SOURCE_DIR}/tinyusdz/usdVox.cc)
 endif()
 
 set(TINYUSDZ_PYTHON_BINDING_SOURCES
-    ${PROJECT_SOURCE_DIR}/src/python-bindings.cc)
+    ${PROJECT_SOURCE_DIR}/tinyusdz/python-bindings.cc)
 
 #set(TINYUSDZ_BLENDER_PYTHON_BINDING_SOURCES
-#    ${PROJECT_SOURCE_DIR}/src/blender/bindings.cc)
+#    ${PROJECT_SOURCE_DIR}/tinyusdz/blender/bindings.cc)
 
 if(TINYUSDZ_WITH_TIFF)
   if(TINYUSDZ_USE_SYSTEM_ZLIB)
     set_source_files_properties(
-      ${PROJECT_SOURCE_DIR}/src/external/tiny_dng_loader.cc
+      ${PROJECT_SOURCE_DIR}/tinyusdz/external/tiny_dng_loader.cc
       PROPERTIES COMPILE_DEFINITIONS "TINY_DNG_LOADER_USE_SYSTEM_ZLIB=1")
   else()
     set_source_files_properties(
-      ${PROJECT_SOURCE_DIR}/src/external/tiny_dng_loader.cc
-      PROPERTIES INCLUDE_DIRECTORIES ${PROJECT_SOURCE_DIR}/src/external)
+      ${PROJECT_SOURCE_DIR}/tinyusdz/external/tiny_dng_loader.cc
+      PROPERTIES INCLUDE_DIRECTORIES ${PROJECT_SOURCE_DIR}/tinyusdz/external)
   endif()
 
   list(APPEND TINYUSDZ_DEP_SOURCES
-       ${PROJECT_SOURCE_DIR}/src/external/tinyexr.cc)
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/tinyexr.cc)
 endif(TINYUSDZ_WITH_TIFF)
 
 if(TINYUSDZ_WITH_EXR)
   if(TINYUSDZ_USE_SYSTEM_ZLIB)
     set_source_files_properties(
-      ${PROJECT_SOURCE_DIR}/src/external/tinyexr.cc
+      ${PROJECT_SOURCE_DIR}/tinyusdz/external/tinyexr.cc
       PROPERTIES COMPILE_DEFINITIONS "TINYEXR_USE_MINIZ=0")
   else()
     set_source_files_properties(
-      ${PROJECT_SOURCE_DIR}/src/external/tinyexr.cc
-      PROPERTIES INCLUDE_DIRECTORIES ${PROJECT_SOURCE_DIR}/src/external)
+      ${PROJECT_SOURCE_DIR}/tinyusdz/external/tinyexr.cc
+      PROPERTIES INCLUDE_DIRECTORIES ${PROJECT_SOURCE_DIR}/tinyusdz/external)
   endif()
 
   list(APPEND TINYUSDZ_DEP_SOURCES
-       ${PROJECT_SOURCE_DIR}/src/external/tinyexr.cc)
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/tinyexr.cc)
 endif(TINYUSDZ_WITH_EXR)
 
 if(TINYUSDZ_WITH_TIFF OR TINYUSDZ_WITH_EXR)
 
   if(NOT TINYUSDZ_USE_SYSTEM_ZLIB)
-    list(APPEND TINYUSDZ_DEP_SOURCES ${PROJECT_SOURCE_DIR}/src/external/miniz.c)
+    list(APPEND TINYUSDZ_DEP_SOURCES ${PROJECT_SOURCE_DIR}/tinyusdz/external/miniz.c)
 
     # TODO: Set this only for clang, gcc
     set_source_files_properties(
-      ${PROJECT_SOURCE_DIR}/src/external/miniz.c
+      ${PROJECT_SOURCE_DIR}/tinyusdz/external/miniz.c
       PROPERTIES COMPILE_DEFINITIONS "_LARGEFILE64_SOURCE=1")
   endif()
 
@@ -537,16 +537,16 @@ endif()
 
 if(TINYUSDZ_WITH_ALAC_AUDIO)
   list(APPEND TINYUSDZ_DEP_SOURCES
-       ${PROJECT_SOURCE_DIR}/src/external/alac/codec/EndianPortable.c
-       ${PROJECT_SOURCE_DIR}/src/external/alac/codec/ALACBitUtilities.c
-       ${PROJECT_SOURCE_DIR}/src/external/alac/codec/ALACDecoder.cpp
-       ${PROJECT_SOURCE_DIR}/src/external/alac/codec/ALACEncoder.cpp
-       ${PROJECT_SOURCE_DIR}/src/external/alac/codec/ag_dec.c
-       ${PROJECT_SOURCE_DIR}/src/external/alac/codec/ag_enc.c
-       ${PROJECT_SOURCE_DIR}/src/external/alac/codec/dp_dec.c
-       ${PROJECT_SOURCE_DIR}/src/external/alac/codec/dp_enc.c
-       ${PROJECT_SOURCE_DIR}/src/external/alac/codec/matrix_dec.c
-       ${PROJECT_SOURCE_DIR}/src/external/alac/codec/matrix_enc.c
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/alac/codec/EndianPortable.c
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/alac/codec/ALACBitUtilities.c
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/alac/codec/ALACDecoder.cpp
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/alac/codec/ALACEncoder.cpp
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/alac/codec/ag_dec.c
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/alac/codec/ag_enc.c
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/alac/codec/dp_dec.c
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/alac/codec/dp_enc.c
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/alac/codec/matrix_dec.c
+       ${PROJECT_SOURCE_DIR}/tinyusdz/external/alac/codec/matrix_enc.c
   )
 endif(TINYUSDZ_WITH_ALAC_AUDIO)
 
@@ -673,7 +673,7 @@ if(TINYUSDZ_WITH_OPENSUBDIV)
   add_osd_lib()
   #list(APPEND TINYUSDZ_EXT_LIBRARIES $<TARGET_OBJECTS:osd_cpu>)
 
-  list(APPEND TINYUSDZ_SOURCES ${PROJECT_SOURCE_DIR}/src/subdiv.cc)
+  list(APPEND TINYUSDZ_SOURCES ${PROJECT_SOURCE_DIR}/tinyusdz/subdiv.cc)
 
 endif(TINYUSDZ_WITH_OPENSUBDIV)
 
@@ -1022,7 +1022,7 @@ foreach(TINYUSDZ_LIB_TARGET ${TINYUSDZ_LIBS})
   endif()
 
   target_include_directories(${TINYUSDZ_LIB_TARGET}
-                             PRIVATE ${PROJECT_SOURCE_DIR}/src)
+                             PRIVATE ${PROJECT_SOURCE_DIR}/tinyusdz)
 
   #if(TINYUSDZ_WITH_JSON)
   ##target_include_directories(
@@ -1125,13 +1125,13 @@ if(TINYUSDZ_WITH_C_API)
     target_compile_definitions(${BUILD_TARGET_C} PRIVATE "TINYUSDZ_COMPILE_LIBRARY")
     target_compile_definitions(${BUILD_TARGET_C} PRIVATE "TINYUSDZ_SHARED_LIBRARY")
     target_include_directories(
-      ${BUILD_TARGET_C} PRIVATE ${PROJECT_SOURCE_DIR}/src)
+      ${BUILD_TARGET_C} PRIVATE ${PROJECT_SOURCE_DIR}/tinyusdz)
   endif() 
 
   add_library(${BUILD_TARGET_C}_static STATIC ${TINYUSDZ_C_API_SOURCES})
   target_link_libraries(${BUILD_TARGET_C}_static PRIVATE ${TINYUSDZ_TARGET_STATIC})
   target_include_directories(
-    ${BUILD_TARGET_C}_static PRIVATE ${PROJECT_SOURCE_DIR}/src)
+    ${BUILD_TARGET_C}_static PRIVATE ${PROJECT_SOURCE_DIR}/tinyusdz)
 endif()
 
 if(TINYUSDZ_WITH_PYTHON)
@@ -1202,7 +1202,7 @@ if(TINYUSDZ_WITH_TOOL_USDA_PARSER AND TINYUSDZ_WITH_MODULE_USDA_READER)
     target_compile_definitions(usda_parser
                                PRIVATE "TINYUSDZ_PRODUCTION_BUILD")
   endif()
-  target_include_directories(usda_parser PRIVATE ${PROJECT_SOURCE_DIR}/src/)
+  target_include_directories(usda_parser PRIVATE ${PROJECT_SOURCE_DIR}/tinyusdz/)
   target_link_libraries(usda_parser PRIVATE ${TINYUSDZ_TARGET_STATIC})
 endif()
 
@@ -1215,7 +1215,7 @@ if(TINYUSDZ_WITH_TOOL_USDC_PARSER AND TINYUSDZ_WITH_MODULE_USDC_READER)
     target_compile_definitions(usdc_parser
                                PRIVATE "TINYUSDZ_PRODUCTION_BUILD")
   endif()
-  target_include_directories(usdc_parser PRIVATE ${PROJECT_SOURCE_DIR}/src/)
+  target_include_directories(usdc_parser PRIVATE ${PROJECT_SOURCE_DIR}/tinyusdz/)
   target_link_libraries(usdc_parser PRIVATE ${TINYUSDZ_TARGET_STATIC})
 endif()
 
@@ -1267,7 +1267,7 @@ if(TINYUSDZ_BUILD_BENCHMARKS)
   add_sanitizers(${TINYUSDZ_BENCHMARK_TARGET})
 
   target_include_directories(
-    ${TINYUSDZ_BENCHMARK_TARGET} PRIVATE ${PROJECT_SOURCE_DIR}/src
+    ${TINYUSDZ_BENCHMARK_TARGET} PRIVATE ${PROJECT_SOURCE_DIR}/tinyusdz
                                          ${PROJECT_SOURCE_DIR}/bencharks)
   target_link_libraries(${TINYUSDZ_BENCHMARK_TARGET}
                         PRIVATE ${TINYUSDZ_TARGET_STATIC})
@@ -1306,7 +1306,7 @@ if(TINYUSDZ_BUILD_TESTS)
   add_sanitizers(${TINYUSDZ_TEST_TARGET})
 
   target_include_directories(
-    ${TINYUSDZ_TEST_TARGET} PRIVATE ${PROJECT_SOURCE_DIR}/src
+    ${TINYUSDZ_TEST_TARGET} PRIVATE ${PROJECT_SOURCE_DIR}/tinyusdz
                                     ${PROJECT_SOURCE_DIR}/tests)
   target_link_libraries(${TINYUSDZ_TEST_TARGET}
                         PRIVATE ${TINYUSDZ_TARGET_STATIC})
